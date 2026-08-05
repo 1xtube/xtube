@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<style>
+:root {
+  --dark: #262626;
+  --accent: #D30003;
+  --accent2: #b0004f;
+}
+
+body {
+  margin:0;
+  background:#000;
+  overflow:hidden;
+}
+
+/* PLAYER WRAP */
+#playerWrap {
+  position: fixed;
+	z-index: 9999;
+  inset: 0;
+  background: rgba(20,20,20,0.96);
+}
+
+/* IFRAME */
+#playerFrame {
+  width:100%;
+  height:100%;
+  border:none;
+}
+
+body.playerActive::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  pointer-events: none;
+  z-index: 50;
+}
+
+
+/* PANEL — now floating + non-blocking */
+.playerBar {
+  position: absolute;
+  bottom: 6px;   /* sits just above iframe edge */
+  left: 50%;
+  transform: translateX(-50%);
+z-index: 10000;
+  width: 75%;
+  height: 42px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+pointer-events: auto;
+  padding: 0 12px;
+
+  border-radius: 12px;
+
+  background: rgba(30,30,30,0.35);
+  backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.playerBar.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+/* show on active */
+#playerWrap.active .playerBar {
+  opacity: 1;
+}
+
+/* ENABLE interaction only on controls */
+.playerBar button,
+.playerBar input {
+  pointer-events: auto;
+}
+
+/* buttons style */
+.playerBar button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: 0.2s;
+}
+
+.playerBar button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* volume slider */
+#volumeSlider {
+  width: 80px;
+}
+
+
+	.safeOverlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+
+  background: rgba(255,255,255,0.02);
+  backdrop-filter: blur(2px);
+}
+
+.floatingBar {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 8px 12px;
+
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: blur(10px);
+
+  border-radius: 12px;
+
+  border: 1px solid rgba(255,255,255,0.4);
+
+  box-shadow:
+    inset 2px 2px 6px rgba(0,0,0,0.15),
+    inset -2px -2px 5px rgba(255,255,255,0.8),
+    0 2px 8px rgba(0,0,0,0.15);
+
+  z-index: 9999;
+}
+iframe {
+  pointer-events: auto;
+}
+
+/* only overlay layer catches clicks */
+.ui-layer {
+  pointer-events: none;
+}
+
+.playerBar span {
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+/* ESC MODE ACTIVE */
+body.escMode .playerBar span {
+  color: #D30003; /* raspberry / red glow */
+  text-shadow:
+    0 0 6px rgba(211,0,3,0.6),
+    0 0 12px rgba(211,0,3,0.3);
+}
+
+	</style></head>
+<body>
+<div id="playerWrap">
+
+  <div class="playerBar">
+    <span>XTUBE</span>
+
+    <div class="controls">
+      <button onclick="toggleMute()" id="muteBtn">🔊</button>
+      <button onclick="toggleFullscreen()">⛶</button>
+  <button id="closeBtn">✕</button>
+
+
+    </div>
+  </div>
+
+  <iframe
+  id="playerFrame"
+  allowfullscreen
+  allow="autoplay; fullscreen; picture-in-picture; encrypted-media">
+</iframe>
+
+  <input id="volumeSlider" type="range" min="0" max="100" value="100">
+
+</div>
+
+<script>
+const frame = document.getElementById("playerFrame");
+const slider = document.getElementById("volumeSlider");
+const muteBtn = document.getElementById("muteBtn");
+const wrap = document.getElementById("playerWrap"); // ✅ 
+
+/* ================= LOAD STREAM ================= */
+const params = new URLSearchParams(window.location.search);
+const stream = params.get("src");
+
+if (stream) {
+  frame.src = decodeURIComponent(stream);
+}
+
+/* ================= STATE ================= */
+let volume = 1;
+let muted = false;
+let hideTimer;
+
+/* ================= FULLSCREEN (SAFE MOBILE FIX) ================= */
+function toggleFullscreen(){
+  const el = document.documentElement;
+
+  if (!document.fullscreenElement) {
+    el.requestFullscreen?.().catch(() => {
+      console.log("Fullscreen not supported");
+    });
+  } else {
+    document.exitFullscreen?.();
+  }
+}
+
+/* ================= CLOSE (FIXED + SAFE RESET) ================= */
+window.closePlayer = function(){
+
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  }
+
+  if (wrap) wrap.classList.remove("active");
+  document.body.classList.remove("playerActive");
+
+  // restore interaction safety
+  document.body.style.pointerEvents = "auto";
+
+  // reset UI bar if exists
+  const bar = document.querySelector(".playerBar");
+  if (bar) {
+    bar.style.opacity = "0";
+  }
+
+  setTimeout(() => {
+    frame.src = "";
+  }, 250);
+};
+
+/* ================= VOLUME CONTROL ================= */
+if (slider) {
+  slider.addEventListener("input", function(){
+    volume = this.value / 100;
+    if (volume > 0) muted = false;
+    applyVolume();
+  });
+}
+
+/* ================= MUTE ================= */
+function toggleMute(){
+  muted = !muted;
+  applyVolume();
+}
+
+/* ================= APPLY AUDIO ================= */
+function applyVolume(){
+  try {
+    const video = frame.contentWindow?.document?.querySelector("video");
+
+    if (video) {
+      video.volume = muted ? 0 : volume;
+      return;
+    }
+  } catch(e) {
+    // cross-origin fallback
+  }
+
+  frame.style.filter = muted ? "grayscale(1) brightness(0.6)" : "none";
+
+  if (muteBtn) {
+    muteBtn.textContent = muted ? "🔇" : "🔊";
+  }
+}
+
+/* ================= ESC KEY ================= */
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closePlayer();
+});
+
+/* ================= TOUCH / MOVE UI TRIGGER ================= */
+function showControls(){
+  const bar = document.querySelector(".playerBar");
+  if (!bar) return;
+
+  bar.style.opacity = "1";
+  bar.style.pointerEvents = "auto"; // ✅ important fix
+
+  clearTimeout(hideTimer);
+  hideTimer = setTimeout(() => {
+    bar.style.opacity = "0";
+    bar.style.pointerEvents = "none"; // ✅ prevents click-block bug
+  }, 2200);
+}
+
+document.addEventListener("mousemove", showControls);
+document.addEventListener("touchstart", showControls);
+
+/* ================= FORCE CLOSE BUTTON SAFETY ================= */
+document.addEventListener("click", (e) => {
+  if (e.target && e.target.id === "closeBtn") {
+    e.preventDefault();
+    e.stopPropagation();
+    closePlayer();
+  }
+});
+</script>
+
+
+
+
+</body>
+</html>
