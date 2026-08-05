@@ -109,20 +109,20 @@ body.playerActive::after {
 }
 svg {
     display: block;
-    width: 240px;
+    width: 280px;
     height: auto;
     margin: 20px auto;
 }
 	.semi-transparent-rect {
     display: block;
-    width: 240px;
+    width: 280px;
     height: auto;
     margin: 20px auto;
 } 
 
 @media (max-width: 768px) {
     .semi-transparent-rect {
-        width: 180px;
+        width: 220px;
     }
 }
 	 
@@ -385,22 +385,28 @@ padding-bottom: 2px;
 }
 
 .play-input {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    position: relative;
+    display: flex;
+    align-items: center;
 
-  height: 38px; 
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
 
-  padding: 2px 8px;
-  border-radius: 10px;
+    min-height: 42px;
 
-  background: rgba(255,255,255,0.25);
-  backdrop-filter: blur(8px);
+    padding: 6px 10px;
 
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,0.6),
-    inset 0 -1px 2px rgba(0,0,0,0.15);
+    border-radius: 10px;
+
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(8px);
+
+    box-sizing: border-box;
+
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.6),
+        inset 0 -1px 2px rgba(0,0,0,0.15);
 }
 
 
@@ -422,23 +428,26 @@ padding-bottom: 2px;
 
 /* INPUT becomes real control */
 .play-input input {
-  width: 100%;
-  border: none;
-  outline: none;
-  text-align: center;
-  background: rgba(255,255,255,0.4);
-  backdrop-filter: blur(4px);
+    flex: 1;
+    min-width: 0;
 
-  padding: 6px 10px;
-  border-radius: 6px;
+    border: none;
+    outline: none;
 
-  font-size: 13px;
-  color: #333;
+    background: rgba(255,255,255,0.4);
+    backdrop-filter: blur(4px);
 
-  box-shadow:
-    inset 0 1px 2px rgba(0,0,0,0.15);
+    padding: 7px 10px;
 
-  caret-color: #b0004f;
+    border-radius: 6px;
+
+    font-size: 13px;
+    color: #333;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        inset 0 1px 2px rgba(0,0,0,.15);
 }
 
 /* focus glow */
@@ -447,7 +456,17 @@ padding-bottom: 2px;
   box-shadow: 0 0 8px rgba(176,0,79,0.3);
 }
 
+@media (max-width: 700px) {
 
+    .play-input {
+        width: calc(100% - 20px);
+    }
+
+    #streamInput::placeholder {
+        font-size: 11px;
+    }
+
+}
 /* mini footer */
 .mini-footer {
   width: 100%;
@@ -697,10 +716,10 @@ video {
   <div class="glass-note">
     <span class="glass-text">
       ipTV STREAMING&nbsp;
-      <a href="/tv"><span class="i-dot2">➤</span></a>
+      <a href="https://xtub.pages.dev/tv"><span class="i-dot2">➤</span></a>
     </span>
   </div>
-</div>
+</div>	
 <div class="ac"><div class="sep-mac">
   <span class="o"></span>
   <span class="o"></span>
@@ -711,7 +730,7 @@ video {
   <div class="glass-note">
     <span class="glass-text">
       WEB+ STREAMING Player&nbsp;
-      <a href="/player"><span class="i-dot2">➤</span></a>
+      <a href="https://xtub.pages.dev/player"><span class="i-dot2">➤</span></a>
     </span>
   </div>
 </div>
@@ -736,9 +755,8 @@ video {
 <div class="glass-note glass-text play-input">
   <div class="stream-label" onclick="focusInput()"></div>
   <input id="streamInput" type="text" placeholder="paste url... (.m3u8 / .mp4 / embed) → CLICK ENTER" />
-</div>
-<!-- MINI FOOTER -->
-<div class="ac">	
+
+<!-- MINI FOOTER -->	
 <div class="mini-footer">
   xtube player • m3u8 / mp4 • direct stream
 </div>
