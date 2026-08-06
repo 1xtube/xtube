@@ -221,23 +221,33 @@ svg {
 }
 
 /* WRAPPER TEXT (before links) */
-.ac a {
-  background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(6px);
-  width: 14px;
-  font-size: 12px;
-padding-bottom: 2px;
+
+	.ac a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   font-family: "Montserrat", sans-serif;
   font-style: normal;
-	border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.4);
-  box-shadow:
-    inset 1px 1px 3px rgba(0,0,0,0.25),
-    inset -1px -1px 2px rgba(255,255,255,0.9),
-    0 2px 6px rgba(0,0,0,0.15);
+    width: 26px;
+    height: 26px;
 
-  color: #333;
-}
+    margin-left: 8px;
+
+    border-radius: 6px;      /* more square */
+    text-decoration: none;
+
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(8px);
+
+    border: 1px solid rgba(255,255,255,0.35);
+
+    box-shadow:
+        inset 1px 1px 3px rgba(0,0,0,0.18),
+        inset -1px -1px 2px rgba(255,255,255,0.85),
+        0 2px 6px rgba(0,0,0,0.15);
+
+    transition: .25s;
+} 
 .ac a:active {
   transform: translateY(1px);
 
@@ -247,24 +257,15 @@ padding-bottom: 2px;
 }
 
 .ac a:hover {
-  color: #fff;
+    transform: translateY(-1px);
 
- background: #e6e6e6;
-  border: 1px solid #bbb;
+    background: linear-gradient(145deg, #D30003, #b0004f);
 
-  box-shadow:
-    inset 3px 3px 6px rgba(0,0,0,0.35),
-    inset -2px -2px 4px rgba(255,255,255,0.9);
+    color: #fff;
 
-  color: #555;
-
-  background: linear-gradient(145deg, #D30003, #b0004f);
-
-  box-shadow:
-    0 3px 8px rgba(211,0,3,0.4), /* glow */
-    inset 0 1px 0 rgba(255,255,255,0.2);
-
-  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    box-shadow:
+        0 0 12px rgba(211,0,3,.35),
+        inset 0 1px 0 rgba(255,255,255,.25);
 }
 .glass-text {
     display: inline-flex;
@@ -482,13 +483,16 @@ padding-bottom: 2px;
   font-size: 10px;
 		}		
 		.i-dot2 {
-  display: inline-block;
-  color: #fff;
-  font-size: 14px;
-  width: 16px;
-  animation: liveBlink 1.6s ease-in-out infinite;
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+
+    animation: liveBlink 1.6s ease-in-out infinite;
+}
 @keyframes liveBlink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.2; }
