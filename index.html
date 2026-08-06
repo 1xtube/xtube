@@ -222,32 +222,32 @@ svg {
 
 /* WRAPPER TEXT (before links) */
 
-	.ac a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  font-family: "Montserrat", sans-serif;
-  font-style: normal;
-    width: 26px;
-    height: 26px;
+.ac a{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
 
-    margin-left: 8px;
+    width:32px;
+    height:32px;
 
-    border-radius: 6px;      /* more square */
-    text-decoration: none;
+    margin-left:10px;
 
-    background: rgba(255,255,255,0.55);
-    backdrop-filter: blur(8px);
+    border-radius:8px;
 
-    border: 1px solid rgba(255,255,255,0.35);
+    text-decoration:none;
+
+    background:rgba(255,255,255,.55);
+    backdrop-filter:blur(8px);
+
+    border:1px solid rgba(255,255,255,.35);
 
     box-shadow:
-        inset 1px 1px 3px rgba(0,0,0,0.18),
-        inset -1px -1px 2px rgba(255,255,255,0.85),
-        0 2px 6px rgba(0,0,0,0.15);
+        inset 1px 1px 3px rgba(0,0,0,.20),
+        inset -1px -1px 2px rgba(255,255,255,.90),
+        0 2px 6px rgba(0,0,0,.15);
 
-    transition: .25s;
-} 
+    transition:.25s;
+}
 .ac a:active {
   transform: translateY(1px);
 
@@ -266,6 +266,48 @@ svg {
     box-shadow:
         0 0 12px rgba(211,0,3,.35),
         inset 0 1px 0 rgba(255,255,255,.25);
+}
+	 .ac a:focus,
+.ac a:focus-visible{
+
+    outline:none;
+
+    border-color:#D30003;
+
+    box-shadow:
+        0 0 0 3px rgba(211,0,3,.35),
+        0 0 16px rgba(211,0,3,.45);
+}
+	 .xtube-orb{
+    width:12px;
+    height:12px;
+
+    border-radius:50%;
+
+    background:#D30003;
+
+    box-shadow:
+        0 0 4px #D30003,
+        0 0 10px rgba(211,0,3,.7);
+
+    animation:xtubePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes xtubePulse{
+
+    0%,100%{
+        transform:scale(1);
+        box-shadow:
+            0 0 4px #D30003,
+            0 0 10px rgba(211,0,3,.6);
+    }
+
+    50%{
+        transform:scale(1.25);
+        box-shadow:
+            0 0 8px #ff3b3b,
+            0 0 18px rgba(255,60,60,.9);
+    }
 }
 .glass-text {
     display: inline-flex;
@@ -720,7 +762,7 @@ video {
   <div class="glass-note">
     <span class="glass-text">
       ipTV STREAMING&nbsp;
-      <a href="https://xtub.pages.dev/tv"><span class="i-dot2">➤</span></a>
+      <a href="https://xtub.pages.dev/tv"><span class="xtube-orb"></span></a>
     </span>
   </div>
 </div>	
@@ -734,7 +776,7 @@ video {
   <div class="glass-note">
     <span class="glass-text">
       WEB+ STREAMING Player&nbsp;
-      <a href="https://xtub.pages.dev/player"><span class="i-dot2">➤</span></a>
+      <a href="https://xtub.pages.dev/player"><span class="xtube-orb"></span></a>
     </span>
   </div>
 </div>
