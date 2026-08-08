@@ -436,7 +436,75 @@ align-items:center;
 
 }
 
+#liveCard{
 
+    background:rgba(25,25,25,.90);
+
+    border-left:4px solid #00ff66;
+
+    border-radius:8px;
+
+    padding:8px 12px;
+
+    margin:6px;
+
+    transition:all .25s;
+
+    box-shadow:0 0 20px rgba(0,0,0,.45);
+
+}
+
+#cardNow{
+
+    color:#fff;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+}
+
+#cardNext{
+
+    margin-top:4px;
+
+    color:#aaa;
+
+    font-size:11px;
+
+}
+
+.cardProgress{
+
+    height:4px;
+
+    background:#333;
+
+    border-radius:10px;
+
+    margin-top:6px;
+
+    overflow:hidden;
+
+}
+
+#cardFill{
+
+    display:block;
+
+    height:100%;
+
+    width:0%;
+
+    background:#00ff66;
+
+}
+
+.hidden{
+
+    display:none;
+
+}
 
 /* selected */
 
@@ -684,6 +752,17 @@ transform:translateY(30px);
 
 <!-- SIDE PANEL -->
 <div id="panel"> <div id="panelScroll">
+	<div id="liveCard" class="hidden">
+
+    <div id="cardNow"></div>
+
+    <div class="cardProgress">
+        <span id="cardFill"></span>
+    </div>
+
+    <div id="cardNext"></div>
+
+</div>
 <div class="panel-item">
 <span class="text">xtube ● CHANNELS ↓</span>
 </div>
@@ -1192,7 +1271,13 @@ document.querySelectorAll(".panel-item").forEach(el => {
 
     document.querySelectorAll(".panel-item").forEach(i => i.classList.remove("active"));
     el.classList.add("active");
+	
+const card = document.getElementById("liveCard");
 
+el.parentNode.insertBefore(card, el.nextSibling);
+
+card.classList.remove("hidden");
+	
     clearTimeout(panelTimer);
     panelTimer = setTimeout(()=>{
       panel.classList.add("hidden");
