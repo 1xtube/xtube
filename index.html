@@ -573,55 +573,53 @@ svg {
     text-shadow: 0 0 12px rgba(255,0,0,0.9);
   }
 }
-.sep-line {
-  height: 10px;
-  display: flex;
-  align-items: center;
-  padding-left: 6px;
-  gap: 4px;
+.cosmic-separator{
+
+    display:flex;
+    flex-direction:column;
+
+    gap:4px;
+
+    margin:8px 0;
+
+}
+ .sep{
+    display:flex;
+    gap:4px;
+    margin:3px 0;
 }
 
-.sep-line span {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-
-  display: inline-block;
-
-  box-shadow: 0 0 2px rgba(0,0,0,0.3);
+.sep span{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#555;
+    transition:.15s;
 }
 
-/* colors */
-.sep-mac .d1 { background: #ff5f56; }
-.sep-mac .d2 { background: #333; }
-.sep-mac .d3 { background: #333; }
-.sep-mac .d4 { background: #333; }
-.sep-mac .d5 { background: #333; }	 
-.sep-mac .o { background: #fff; }
-.sep-mac {
-  height: 10px;
-  display: flex;
-  align-items: center;
-  padding-left: 6px;
-  gap: 4px;
+.sep span.on{
+    transform:scale(1.15);
 }
 
-.sep-mac span {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-
-  display: inline-block;
-
-  box-shadow: 0 0 2px rgba(0,0,0,0.3);
+.green span.on{
+    background:#27c93f;
+    box-shadow:0 0 8px #27c93f;
 }
 
-/* colors */
-.sep-mac .r { background: #ff5f56; }
-.sep-mac .y { background: #ffbd2e; }
-.sep-mac .g { background: #27c93f; }
-.sep-mac .o { background: #c2c2c2; }	 
+.yellow span.on{
+    background:#ffbd2e;
+    box-shadow:0 0 8px #ffbd2e;
+}
 
+.red span.on{
+    background:#ff5f56;
+    box-shadow:0 0 8px #ff5f56;
+}
+
+.blue span.on{
+    background:#00d9ff;
+    box-shadow:0 0 8px #00d9ff;
+}
 video {
   pointer-events: none;
 }
@@ -782,11 +780,9 @@ video {
     </span>
   </div>
 </div>	
-<div class="ac"><div class="sep-mac">
-  <span class="o"></span>
-  <span class="o"></span>
-  <span class="g"></span>
-	</div>
+<div class="ac"><div class="cosmic-separator"><div class="sep green">
+        <span></span><span></span><span></span>
+	</div></div>
 	</div>
 <div class="ac">
   <div class="glass-note">
@@ -796,11 +792,9 @@ video {
     </span>
   </div>
 </div>	
-<div class="ac"><div class="sep-mac">
-  <span class="o"></span>
-  <span class="y"></span>
-  <span class="o"></span>
-	</div>
+<div class="ac"><div class="cosmic-separator"><div class="sep yellow">
+        <span></span><span></span><span></span><span></span>
+	</div></div>
 	</div>	
 <div class="ac">
   <div class="glass-note">
@@ -811,20 +805,14 @@ video {
   </div>
 </div>
 
-	<div class="ac"><div class="sep-mac">
-  <span class="d1"></span>
-  <span class="o"></span>
-  <span class="o"></span>
-  <span class="o"></span>
-  <span class="o"></span>	
-	</div>
+	<div class="ac"><div class="cosmic-separator"><div class="sep red">
+        <span></span><span></span><span></span><span></span><span></span>
+		</div></div>
 	</div>
 	<div class="ac">&nbsp;<button class="play-link" data-src="">YOU CAN TYPE OR PASTE ANY ▽ LIGAL VIDEO OR STREAM LINK TO PLAY ▽</button></div>
-<div class="ac"><div class="sep-mac">
-  <span class="o"></span>
-  <span class="o"></span>
-  <span class="r"></span>
-	</div>
+<div class="ac"><div class="cosmic-separator"><div class="sep blue">
+        <span></span><span></span><span></span>
+	</div></div>
 	</div>
 
 <!-- INPUT GLASS BLOCK -->
@@ -856,7 +844,14 @@ video {
 	</div>
 
 <!-- ================= SCRIPT ================= -->
-	
+<script>
+	const rows=[
+    document.querySelectorAll(".green span"),
+    document.querySelectorAll(".yellow span"),
+    document.querySelectorAll(".red span"),
+    document.querySelectorAll(".blue span")
+];
+	</script>	
 <script>
 const wrap = document.getElementById("playerWrap");
 const frame = document.getElementById("playerFrame");
@@ -1105,7 +1100,35 @@ window.addEventListener("load", () => {
   }
 });
 </script>
+<script>
+	function runDots(selector, speed){
 
+    const dots=[...document.querySelectorAll(selector+" span")];
+
+    let i=0;
+    let dir=1;
+
+    setInterval(()=>{
+
+        dots.forEach(d=>d.classList.remove("on"));
+
+        dots[i].classList.add("on");
+
+        i+=dir;
+
+        if(i>=dots.length-1 || i<=0){
+            dir*=-1;
+        }
+
+    },speed);
+
+}
+
+runDots(".green", 450);
+runDots(".yellow", 600);
+runDots(".red", 750);
+runDots(".blue", 520);
+	</script>
 </body>
 
 </html>
