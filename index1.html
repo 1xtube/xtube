@@ -583,26 +583,42 @@ svg {
     margin:8px 0;
 
 }
-	.sep{
-
+ .sep{
     display:flex;
-
-    gap:5px;
-
-    height:8px;
-
+    gap:4px;
+    margin:3px 0;
 }
-	 .sep span{
 
+.sep span{
     width:7px;
     height:7px;
-
     border-radius:50%;
+    background:#555;
+    transition:.15s;
+}
 
-    background:#444;
+.sep span.on{
+    transform:scale(1.15);
+}
 
-    transition:.25s;
+.green span.on{
+    background:#27c93f;
+    box-shadow:0 0 8px #27c93f;
+}
 
+.yellow span.on{
+    background:#ffbd2e;
+    box-shadow:0 0 8px #ffbd2e;
+}
+
+.red span.on{
+    background:#ff5f56;
+    box-shadow:0 0 8px #ff5f56;
+}
+
+.blue span.on{
+    background:#00d9ff;
+    box-shadow:0 0 8px #00d9ff;
 }
 video {
   pointer-events: none;
@@ -1084,7 +1100,35 @@ window.addEventListener("load", () => {
   }
 });
 </script>
+<script>
+	function runDots(selector, speed){
 
+    const dots=[...document.querySelectorAll(selector+" span")];
+
+    let i=0;
+    let dir=1;
+
+    setInterval(()=>{
+
+        dots.forEach(d=>d.classList.remove("on"));
+
+        dots[i].classList.add("on");
+
+        i+=dir;
+
+        if(i>=dots.length-1 || i<=0){
+            dir*=-1;
+        }
+
+    },speed);
+
+}
+
+runDots(".green",120);
+runDots(".yellow",180);
+runDots(".red",260);
+runDots(".blue",150);
+	</script>
 </body>
 
 </html>
